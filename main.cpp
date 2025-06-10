@@ -128,7 +128,7 @@ private:
     }
 
     void performOCR(const QString &path, const QRect &rect = QRect()) {
-        QString command = "tesseract";
+        QString command = "/tesseract";
         QStringList args;
 
         QString croppedImage = path;
@@ -141,7 +141,7 @@ private:
           //  double scaleY = static_cast<double>(original.height()) / imageLabel->height();
             QRect scaledRect(rect.x(), rect.y(), rect.width(), rect.height());
             QImage cropped = original.copy(scaledRect);
-           // croppedImage = QDir::tempPath() + "/ocr_crop.png";
+          //  croppedImage = QDir::tempPath() + "/ocr_crop.png";
             croppedImage = QApplication::applicationDirPath() + "/ocr_crop.png";
             cropped.save(croppedImage);
         //    qDebug() << "testing";
@@ -150,12 +150,12 @@ private:
         args << croppedImage << "-" << "-l" << lang;
 
         QProcess proc;
-        proc.start(command, args);
+        proc.start(QApplication::applicationDirPath() + command, args);
         proc.waitForFinished();
 
         QString result = proc.readAllStandardOutput();
         textEdit->setPlainText(result);
-         qDebug() << result;
+       //  qDebug() << result;
     }
 
     void performOCROnRegion(const QRect &rect) {
